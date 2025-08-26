@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://vaultx-backend-production.up.railway.app/api/admin',
+  baseURL: '/api/admin',
 });
 
 api.interceptors.request.use((config) => {
