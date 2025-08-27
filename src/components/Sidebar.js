@@ -11,6 +11,7 @@ const Sidebar = () => {
     { path: '/deposits', label: 'Deposits', icon: '💰' },
     { path: '/withdrawals', label: 'Withdrawals', icon: '💸' },
     { path: '/transactions', label: 'Transactions', icon: '📋' },
+    { path: '/analytics', label: 'Analytics', icon: '📊' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
   ];
 
