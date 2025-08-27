@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
+import DateFilter from '../components/DateFilter';
 
 const Deposits = () => {
   const [deposits, setDeposits] = useState([]);
+  const [filteredDeposits, setFilteredDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [processingDeposit, setProcessingDeposit] = useState(null);
   const [actionForm, setActionForm] = useState({ status: 'completed', adminNotes: '' });
 
@@ -15,11 +19,36 @@ const Deposits = () => {
     try {
       const response = await adminAPI.getDeposits();
       setDeposits(response.data);
+      setFilteredDeposits(response.data);
     } catch (error) {
       console.error('Error fetching deposits:', error);
     }
     setLoading(false);
   };
+
+  const filterByDate = () => {
+    let filtered = deposits;
+    
+    if (startDate) {
+      filtered = filtered.filter(dep => new Date(dep.createdAt) >= new Date(startDate));
+    }
+    
+    if (endDate) {
+      filtered = filtered.filter(dep => new Date(dep.createdAt) <= new Date(endDate + 'T23:59:59'));
+    }
+    
+    setFilteredDeposits(filtered);
+  };
+
+  const clearFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setFilteredDeposits(deposits);
+  };
+
+  useEffect(() => {
+    filterByDate();
+  }, [startDate, endDate, deposits]);
 
   const handleProcessDeposit = (deposit) => {
     setProcessingDeposit(deposit);
@@ -54,6 +83,14 @@ const Deposits = () => {
     <div>
       <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Deposit Management</h1>
       
+      <DateFilter
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        onClear={clearFilter}
+      />
+      
       <div style={{ backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
@@ -69,7 +106,7 @@ const Deposits = () => {
             </tr>
           </thead>
           <tbody>
-            {deposits.map((deposit) => (
+            {filteredDeposits.map((deposit) => (
               <tr key={deposit._id} style={{ borderBottom: '1px solid #dee2e6' }}>
                 <td style={{ padding: '15px' }}>{deposit.userId?.name || 'Unknown'}</td>
                 <td style={{ padding: '15px' }}>{deposit.type.toUpperCase()}</td>

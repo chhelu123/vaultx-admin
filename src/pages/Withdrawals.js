@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
+import DateFilter from '../components/DateFilter';
 
 const Withdrawals = () => {
   const [withdrawals, setWithdrawals] = useState([]);
+  const [filteredWithdrawals, setFilteredWithdrawals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [processingWithdrawal, setProcessingWithdrawal] = useState(null);
   const [actionForm, setActionForm] = useState({ status: 'completed', adminNotes: '' });
 
@@ -15,11 +19,36 @@ const Withdrawals = () => {
     try {
       const response = await adminAPI.getWithdrawals();
       setWithdrawals(response.data);
+      setFilteredWithdrawals(response.data);
     } catch (error) {
       console.error('Error fetching withdrawals:', error);
     }
     setLoading(false);
   };
+
+  const filterByDate = () => {
+    let filtered = withdrawals;
+    
+    if (startDate) {
+      filtered = filtered.filter(w => new Date(w.createdAt) >= new Date(startDate));
+    }
+    
+    if (endDate) {
+      filtered = filtered.filter(w => new Date(w.createdAt) <= new Date(endDate + 'T23:59:59'));
+    }
+    
+    setFilteredWithdrawals(filtered);
+  };
+
+  const clearFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setFilteredWithdrawals(withdrawals);
+  };
+
+  useEffect(() => {
+    filterByDate();
+  }, [startDate, endDate, withdrawals]);
 
   const handleProcessWithdrawal = (withdrawal) => {
     setProcessingWithdrawal(withdrawal);
@@ -54,6 +83,14 @@ const Withdrawals = () => {
     <div>
       <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Withdrawal Management</h1>
       
+      <DateFilter
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        onClear={clearFilter}
+      />
+      
       <div style={{ backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
@@ -69,7 +106,7 @@ const Withdrawals = () => {
             </tr>
           </thead>
           <tbody>
-            {withdrawals.map((withdrawal) => (
+            {filteredWithdrawals.map((withdrawal) => (
               <tr key={withdrawal._id} style={{ borderBottom: '1px solid #dee2e6' }}>
                 <td style={{ padding: '15px' }}>{withdrawal.userId?.name || 'Unknown'}</td>
                 <td style={{ padding: '15px' }}>{withdrawal.type.toUpperCase()}</td>

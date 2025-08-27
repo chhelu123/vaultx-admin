@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
+import DateFilter from '../components/DateFilter';
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     fetchTransactions();
@@ -13,11 +17,36 @@ const Transactions = () => {
     try {
       const response = await adminAPI.getTransactions();
       setTransactions(response.data);
+      setFilteredTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }
     setLoading(false);
   };
+
+  const filterByDate = () => {
+    let filtered = transactions;
+    
+    if (startDate) {
+      filtered = filtered.filter(tx => new Date(tx.createdAt) >= new Date(startDate));
+    }
+    
+    if (endDate) {
+      filtered = filtered.filter(tx => new Date(tx.createdAt) <= new Date(endDate + 'T23:59:59'));
+    }
+    
+    setFilteredTransactions(filtered);
+  };
+
+  const clearFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setFilteredTransactions(transactions);
+  };
+
+  useEffect(() => {
+    filterByDate();
+  }, [startDate, endDate, transactions]);
 
   const getTypeColor = (type) => {
     return type === 'buy' ? '#2ecc71' : '#e74c3c';
@@ -30,6 +59,14 @@ const Transactions = () => {
   return (
     <div>
       <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Transaction History</h1>
+      
+      <DateFilter
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        onClear={clearFilter}
+      />
       
       <div style={{ backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -45,7 +82,7 @@ const Transactions = () => {
             </tr>
           </thead>
           <tbody>
-            {transactions.map((transaction) => (
+            {filteredTransactions.map((transaction) => (
               <tr key={transaction._id} style={{ borderBottom: '1px solid #dee2e6' }}>
                 <td style={{ padding: '15px' }}>{transaction.userId?.name || 'Unknown'}</td>
                 <td style={{ padding: '15px' }}>
