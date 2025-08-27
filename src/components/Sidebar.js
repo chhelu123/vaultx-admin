@@ -20,10 +20,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div style={{ width: '250px', backgroundColor: '#2c3e50', color: 'white', padding: '20px' }}>
+    <div style={{ width: '250px', backgroundColor: '#2c3e50', color: 'white', padding: '20px', position: 'relative', display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <h2 style={{ marginBottom: '30px', textAlign: 'center' }}>Admin Panel</h2>
       
-      <nav>
+      <nav style={{ flex: 1 }}>
         {menuItems.map((item) => (
           <Link
             key={item.path}
@@ -47,16 +47,14 @@ const Sidebar = () => {
       <button
         onClick={handleLogout}
         style={{
-          position: 'absolute',
-          bottom: '20px',
-          left: '20px',
-          right: '20px',
+          width: '100%',
           padding: '12px',
           backgroundColor: '#e74c3c',
           color: 'white',
           border: 'none',
           borderRadius: '8px',
           cursor: 'pointer',
+          marginTop: 'auto'
         }}
       >
         🚪 Logout
