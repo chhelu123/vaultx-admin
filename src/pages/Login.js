@@ -73,11 +73,7 @@ const Login = ({ onLogin }) => {
           </button>
         </form>
 
-        <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '6px', fontSize: '14px' }}>
-          <strong>Default Admin:</strong><br />
-          Username: admin<br />
-          Password: admin123
-        </div>
+
       </div>
     </div>
   );
