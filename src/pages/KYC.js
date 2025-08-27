@@ -157,27 +157,31 @@ const KYC = () => {
               <div>
                 <h4>Aadhar Document</h4>
                 <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '10px', textAlign: 'center' }}>
-                  <a 
-                    href={viewingKYC.aadharDocument} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ color: '#007bff', textDecoration: 'none', padding: '10px 20px', backgroundColor: '#f8f9fa', borderRadius: '4px', display: 'inline-block' }}
-                  >
-                    📄 View Aadhar Document
-                  </a>
+                  {viewingKYC.aadharDocument ? (
+                    <img 
+                      src={viewingKYC.aadharDocument.startsWith('data:') ? viewingKYC.aadharDocument : `data:image/jpeg;base64,${viewingKYC.aadharDocument}`}
+                      alt="Aadhar Document"
+                      style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer' }}
+                      onClick={() => window.open(viewingKYC.aadharDocument.startsWith('data:') ? viewingKYC.aadharDocument : `data:image/jpeg;base64,${viewingKYC.aadharDocument}`, '_blank')}
+                    />
+                  ) : (
+                    <p style={{ color: '#999' }}>No document uploaded</p>
+                  )}
                 </div>
               </div>
               <div>
                 <h4>PAN Document</h4>
                 <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '10px', textAlign: 'center' }}>
-                  <a 
-                    href={viewingKYC.panDocument} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    style={{ color: '#007bff', textDecoration: 'none', padding: '10px 20px', backgroundColor: '#f8f9fa', borderRadius: '4px', display: 'inline-block' }}
-                  >
-                    📄 View PAN Document
-                  </a>
+                  {viewingKYC.panDocument ? (
+                    <img 
+                      src={viewingKYC.panDocument.startsWith('data:') ? viewingKYC.panDocument : `data:image/jpeg;base64,${viewingKYC.panDocument}`}
+                      alt="PAN Document"
+                      style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer' }}
+                      onClick={() => window.open(viewingKYC.panDocument.startsWith('data:') ? viewingKYC.panDocument : `data:image/jpeg;base64,${viewingKYC.panDocument}`, '_blank')}
+                    />
+                  ) : (
+                    <p style={{ color: '#999' }}>No document uploaded</p>
+                  )}
                 </div>
               </div>
             </div>
