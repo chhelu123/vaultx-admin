@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
+import DateFilter from '../components/DateFilter';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({});
+  const [filteredStats, setFilteredStats] = useState({});
+  const [allData, setAllData] = useState({
+    users: [],
+    transactions: [],
+    deposits: [],
+    withdrawals: []
+  });
   const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   useEffect(() => {
     fetchStats();
@@ -11,29 +21,98 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await adminAPI.getStats();
-      setStats(response.data);
+      const [statsRes, usersRes, transactionsRes, depositsRes, withdrawalsRes] = await Promise.all([
+        adminAPI.getStats(),
+        adminAPI.getUsers(),
+        adminAPI.getTransactions(),
+        adminAPI.getDeposits(),
+        adminAPI.getWithdrawals()
+      ]);
+      
+      setStats(statsRes.data);
+      setFilteredStats(statsRes.data);
+      setAllData({
+        users: usersRes.data,
+        transactions: transactionsRes.data,
+        deposits: depositsRes.data,
+        withdrawals: withdrawalsRes.data
+      });
     } catch (error) {
       console.error('Error fetching stats:', error);
     }
     setLoading(false);
   };
 
+  const calculateFilteredStats = () => {
+    let filteredUsers = allData.users;
+    let filteredTransactions = allData.transactions;
+    let filteredDeposits = allData.deposits;
+    let filteredWithdrawals = allData.withdrawals;
+
+    if (startDate) {
+      const start = new Date(startDate);
+      filteredUsers = filteredUsers.filter(u => new Date(u.createdAt) >= start);
+      filteredTransactions = filteredTransactions.filter(t => new Date(t.createdAt) >= start);
+      filteredDeposits = filteredDeposits.filter(d => new Date(d.createdAt) >= start);
+      filteredWithdrawals = filteredWithdrawals.filter(w => new Date(w.createdAt) >= start);
+    }
+
+    if (endDate) {
+      const end = new Date(endDate + 'T23:59:59');
+      filteredUsers = filteredUsers.filter(u => new Date(u.createdAt) <= end);
+      filteredTransactions = filteredTransactions.filter(t => new Date(t.createdAt) <= end);
+      filteredDeposits = filteredDeposits.filter(d => new Date(d.createdAt) <= end);
+      filteredWithdrawals = filteredWithdrawals.filter(w => new Date(w.createdAt) <= end);
+    }
+
+    const totalVolume = filteredTransactions.reduce((sum, tx) => sum + (tx.total || 0), 0);
+    const pendingDeposits = filteredDeposits.filter(d => d.status === 'pending').length;
+    const pendingWithdrawals = filteredWithdrawals.filter(w => w.status === 'pending').length;
+
+    setFilteredStats({
+      totalUsers: filteredUsers.length,
+      totalTransactions: filteredTransactions.length,
+      pendingDeposits,
+      pendingWithdrawals,
+      totalVolume
+    });
+  };
+
+  const clearFilter = () => {
+    setStartDate('');
+    setEndDate('');
+    setFilteredStats(stats);
+  };
+
+  useEffect(() => {
+    if (allData.users.length > 0) {
+      calculateFilteredStats();
+    }
+  }, [startDate, endDate, allData]);
+
   if (loading) {
     return <div>Loading dashboard...</div>;
   }
 
   const statCards = [
-    { title: 'Total Users', value: stats.totalUsers, icon: '👥', color: '#3498db' },
-    { title: 'Total Transactions', value: stats.totalTransactions, icon: '📋', color: '#2ecc71' },
-    { title: 'Pending Deposits', value: stats.pendingDeposits, icon: '💰', color: '#f39c12' },
-    { title: 'Pending Withdrawals', value: stats.pendingWithdrawals, icon: '💸', color: '#e74c3c' },
-    { title: 'Total Volume', value: `₹${stats.totalVolume?.toLocaleString() || 0}`, icon: '💹', color: '#9b59b6' },
+    { title: 'Total Users', value: filteredStats.totalUsers || 0, icon: '👥', color: '#3498db' },
+    { title: 'Total Transactions', value: filteredStats.totalTransactions || 0, icon: '📋', color: '#2ecc71' },
+    { title: 'Pending Deposits', value: filteredStats.pendingDeposits || 0, icon: '💰', color: '#f39c12' },
+    { title: 'Pending Withdrawals', value: filteredStats.pendingWithdrawals || 0, icon: '💸', color: '#e74c3c' },
+    { title: 'Total Volume', value: `₹${filteredStats.totalVolume?.toLocaleString() || 0}`, icon: '💹', color: '#9b59b6' },
   ];
 
   return (
     <div>
       <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Dashboard</h1>
+      
+      <DateFilter
+        startDate={startDate}
+        endDate={endDate}
+        onStartDateChange={setStartDate}
+        onEndDateChange={setEndDate}
+        onClear={clearFilter}
+      />
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         {statCards.map((card, index) => (
