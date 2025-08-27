@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
+import UserDetailsModal from '../components/UserDetailsModal';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState(null);
   const [walletForm, setWalletForm] = useState({ inr: 0, usdt: 0 });
+  const [selectedUser, setSelectedUser] = useState(null);
 
   useEffect(() => {
     fetchUsers();
@@ -66,6 +68,20 @@ const Users = () => {
                 <td style={{ padding: '15px' }}>{user.wallets?.usdt?.toFixed(6) || '0.000000'}</td>
                 <td style={{ padding: '15px' }}>{new Date(user.createdAt).toLocaleDateString()}</td>
                 <td style={{ padding: '15px' }}>
+                  <button
+                    onClick={() => setSelectedUser(user)}
+                    style={{
+                      padding: '8px 16px',
+                      backgroundColor: '#fcd535',
+                      color: '#000',
+                      border: 'none',
+                      borderRadius: '4px',
+                      cursor: 'pointer',
+                      marginRight: '8px'
+                    }}
+                  >
+                    View Details
+                  </button>
                   <button
                     onClick={() => handleEditWallet(user)}
                     style={{
@@ -128,6 +144,13 @@ const Users = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {selectedUser && (
+        <UserDetailsModal
+          user={selectedUser}
+          onClose={() => setSelectedUser(null)}
+        />
       )}
     </div>
   );
