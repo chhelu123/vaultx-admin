@@ -32,7 +32,14 @@ const UserDetailsModal = ({ user, onClose, onImpersonate }) => {
   };
 
   const handleImpersonate = () => {
-    const userToken = btoa(JSON.stringify({ id: user._id, name: user.name, email: user.email }));
+    const userToken = btoa(JSON.stringify({ 
+      id: user._id, 
+      name: user.name, 
+      email: user.email,
+      wallets: user.wallets,
+      kycStatus: user.kycStatus,
+      canTrade: user.canTrade
+    }));
     window.open(`https://vaultx-frontend.vercel.app?impersonate=${userToken}`, '_blank');
   };
 
