@@ -4,10 +4,12 @@ import UserDetailsModal from '../components/UserDetailsModal';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState(null);
   const [walletForm, setWalletForm] = useState({ inr: 0, usdt: 0 });
   const [selectedUser, setSelectedUser] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetchUsers();
@@ -17,10 +19,25 @@ const Users = () => {
     try {
       const response = await adminAPI.getUsers();
       setUsers(response.data);
+      setFilteredUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
     setLoading(false);
+  };
+
+  const handleSearch = (term) => {
+    setSearchTerm(term);
+    if (!term) {
+      setFilteredUsers(users);
+      return;
+    }
+    
+    const filtered = users.filter(user => 
+      user.name.toLowerCase().includes(term.toLowerCase()) ||
+      user.email.toLowerCase().includes(term.toLowerCase())
+    );
+    setFilteredUsers(filtered);
   };
 
   const handleEditWallet = (user) => {
@@ -47,6 +64,23 @@ const Users = () => {
     <div>
       <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>User Management</h1>
       
+      <div style={{ marginBottom: '20px' }}>
+        <input
+          type="text"
+          placeholder="Search users by name or email..."
+          value={searchTerm}
+          onChange={(e) => handleSearch(e.target.value)}
+          style={{
+            width: '100%',
+            maxWidth: '400px',
+            padding: '12px 16px',
+            border: '1px solid #ddd',
+            borderRadius: '8px',
+            fontSize: '14px'
+          }}
+        />
+      </div>
+      
       <div style={{ backgroundColor: 'white', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
@@ -60,7 +94,7 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {filteredUsers.map((user) => (
               <tr key={user._id} style={{ borderBottom: '1px solid #dee2e6' }}>
                 <td style={{ padding: '15px' }}>{user.name}</td>
                 <td style={{ padding: '15px' }}>{user.email}</td>
