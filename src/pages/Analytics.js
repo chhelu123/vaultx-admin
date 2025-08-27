@@ -25,15 +25,9 @@ const Analytics = () => {
       const txData = transactions.data;
       const userData = users.data;
 
-      // Calculate profit from buy/sell spread (₹92 buy, ₹89 sell = ₹3 spread)
+      // Calculate revenue (assuming 1% fee on each transaction)
       const totalVolume = txData.reduce((sum, tx) => sum + (tx.total || 0), 0);
-      const buyTransactions = txData.filter(tx => tx.type === 'buy');
-      const sellTransactions = txData.filter(tx => tx.type === 'sell');
-      
-      // Profit = (Buy price - Sell price) * USDT amount
-      const buyProfit = buyTransactions.reduce((sum, tx) => sum + (tx.amount * 3), 0); // ₹3 spread per USDT
-      const sellProfit = sellTransactions.reduce((sum, tx) => sum + (tx.amount * 3), 0); // ₹3 spread per USDT
-      const profit = buyProfit + sellProfit;
+      const profit = totalVolume * 0.01; // 1% fee
       
       // Activity heatmap (by hour)
       const heatmap = Array(24).fill(0);
@@ -42,17 +36,20 @@ const Analytics = () => {
         heatmap[hour]++;
       });
 
-      // Dynamic geographic data based on user registration patterns
+      // Dynamic geographic data based on user IP locations
       const stateDistribution = {};
       userData.forEach(user => {
-        // Extract state from email domain or use random distribution
-        const emailDomain = user.email.split('@')[1];
-        let state = 'Unknown';
+        // Get state from user's IP location (stored during registration)
+        let state = user.location?.state || user.state || 'Unknown';
         
-        // Simple state mapping based on common email patterns
-        if (emailDomain.includes('gmail') || emailDomain.includes('yahoo')) {
-          const states = ['Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu', 'Gujarat', 'Rajasthan', 'West Bengal'];
-          state = states[Math.floor(Math.random() * states.length)];
+        // If no location data, use IP-based mapping (mock for now)
+        if (state === 'Unknown' && user.ipAddress) {
+          // In real implementation, use IP geolocation service
+          // For now, simulate based on IP patterns
+          const ipParts = user.ipAddress?.split('.') || ['0', '0', '0', '0'];
+          const ipHash = parseInt(ipParts[0]) + parseInt(ipParts[1]);
+          const states = ['Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu', 'Gujarat', 'Rajasthan', 'West Bengal', 'Uttar Pradesh', 'Punjab', 'Haryana'];
+          state = states[ipHash % states.length];
         }
         
         if (!stateDistribution[state]) {
@@ -137,9 +134,7 @@ const Analytics = () => {
           </div>
           <div style={{ backgroundColor: 'white', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', borderLeft: '4px solid #f39c12' }}>
             <h3 style={{ color: '#7f8c8d', fontSize: '14px', marginBottom: '10px' }}>Profit Margin</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#f39c12', margin: 0 }}>
-              {analytics.revenue.totalVolume > 0 ? ((analytics.revenue.profit / analytics.revenue.totalVolume) * 100).toFixed(2) : 0}%
-            </p>
+            <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#f39c12', margin: 0 }}>1.0%</p>
           </div>
         </div>
       </div>
