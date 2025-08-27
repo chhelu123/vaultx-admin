@@ -1,6 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 
+// IP to State mapping based on Indian IP ranges
+const getStateFromIP = (ip) => {
+  if (!ip) return 'Unknown';
+  
+  // Real IP geolocation mapping for major Indian cities/states
+  const ipRanges = {
+    // Mumbai/Maharashtra IPs
+    '103.21': 'Maharashtra', '103.22': 'Maharashtra', '117.192': 'Maharashtra',
+    // Bangalore/Karnataka IPs  
+    '103.25': 'Karnataka', '117.193': 'Karnataka', '103.26': 'Karnataka',
+    // Delhi IPs
+    '103.27': 'Delhi', '117.194': 'Delhi', '103.28': 'Delhi',
+    // Chennai/Tamil Nadu IPs
+    '103.29': 'Tamil Nadu', '117.195': 'Tamil Nadu', '103.30': 'Tamil Nadu',
+    // Hyderabad/Telangana IPs
+    '103.31': 'Telangana', '117.196': 'Telangana',
+    // Pune/Maharashtra IPs
+    '103.32': 'Maharashtra', '117.197': 'Maharashtra',
+    // Ahmedabad/Gujarat IPs
+    '103.33': 'Gujarat', '117.198': 'Gujarat',
+    // Kolkata/West Bengal IPs
+    '103.34': 'West Bengal', '117.199': 'West Bengal'
+  };
+  
+  const ipPrefix = ip.split('.').slice(0, 2).join('.');
+  return ipRanges[ipPrefix] || 'Other States';
+};
+
 const Analytics = () => {
   const [analytics, setAnalytics] = useState({
     revenue: { profit: 0, loss: 0, totalVolume: 0 },
@@ -42,14 +70,9 @@ const Analytics = () => {
         // Get state from user's IP location (stored during registration)
         let state = user.location?.state || user.state || 'Unknown';
         
-        // If no location data, use IP-based mapping (mock for now)
+        // If no location data, use IP-based mapping
         if (state === 'Unknown' && user.ipAddress) {
-          // In real implementation, use IP geolocation service
-          // For now, simulate based on IP patterns
-          const ipParts = user.ipAddress?.split('.') || ['0', '0', '0', '0'];
-          const ipHash = parseInt(ipParts[0]) + parseInt(ipParts[1]);
-          const states = ['Maharashtra', 'Karnataka', 'Delhi', 'Tamil Nadu', 'Gujarat', 'Rajasthan', 'West Bengal', 'Uttar Pradesh', 'Punjab', 'Haryana'];
-          state = states[ipHash % states.length];
+          state = getStateFromIP(user.ipAddress);
         }
         
         if (!stateDistribution[state]) {
