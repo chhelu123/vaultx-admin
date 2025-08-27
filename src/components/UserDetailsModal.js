@@ -255,21 +255,21 @@ const UserDetailsModal = ({ user, onClose, onImpersonate }) => {
                       </tr>
                     </thead>
                     <tbody>
-                      {withdrawals.map(with => (
-                        <tr key={with._id} style={{ borderBottom: '1px solid #1a1d23' }}>
+                      {withdrawals.map(withdrawal => (
+                        <tr key={withdrawal._id} style={{ borderBottom: '1px solid #1a1d23' }}>
                           <td style={{ color: '#eaecef', padding: '8px' }}>
-                            {new Date(with.createdAt).toLocaleDateString()}
+                            {new Date(withdrawal.createdAt).toLocaleDateString()}
                           </td>
-                          <td style={{ color: '#eaecef', padding: '8px' }}>{with.type.toUpperCase()}</td>
+                          <td style={{ color: '#eaecef', padding: '8px' }}>{withdrawal.type.toUpperCase()}</td>
                           <td style={{ color: '#eaecef', padding: '8px' }}>
-                            {with.type === 'inr' ? '₹' : ''}{with.amount}
+                            {withdrawal.type === 'inr' ? '₹' : ''}{withdrawal.amount}
                           </td>
                           <td style={{ 
-                            color: with.status === 'completed' ? '#02c076' : 
-                                  with.status === 'pending' ? '#fcd535' : '#f84960',
+                            color: withdrawal.status === 'completed' ? '#02c076' : 
+                                  withdrawal.status === 'pending' ? '#fcd535' : '#f84960',
                             padding: '8px'
                           }}>
-                            {with.status.toUpperCase()}
+                            {withdrawal.status.toUpperCase()}
                           </td>
                         </tr>
                       ))}
