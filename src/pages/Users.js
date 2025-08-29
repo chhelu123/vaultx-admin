@@ -36,7 +36,8 @@ const Users = () => {
     
     const filtered = users.filter(user => 
       user.name.toLowerCase().includes(term.toLowerCase()) ||
-      user.email.toLowerCase().includes(term.toLowerCase())
+      user.email.toLowerCase().includes(term.toLowerCase()) ||
+      user._id.toLowerCase().includes(term.toLowerCase())
     );
     setFilteredUsers(filtered);
   };
@@ -68,7 +69,7 @@ const Users = () => {
       <div style={{ marginBottom: '20px' }}>
         <input
           type="text"
-          placeholder="Search users by name or email..."
+          placeholder="Search users by name, email, or User ID..."
           value={searchTerm}
           onChange={(e) => handleSearch(e.target.value)}
           style={{
@@ -86,6 +87,7 @@ const Users = () => {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr style={{ backgroundColor: '#f8f9fa' }}>
+              <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>User ID</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Name</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Email</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>INR Balance</th>
@@ -97,6 +99,7 @@ const Users = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user._id} style={{ borderBottom: '1px solid #dee2e6' }}>
+                <td style={{ padding: '15px', fontFamily: 'monospace', fontSize: '12px', color: '#007bff' }}>{user._id}</td>
                 <td style={{ padding: '15px' }}>{user.name}</td>
                 <td style={{ padding: '15px' }}>{user.email}</td>
                 <td style={{ padding: '15px' }}>₹{user.wallets?.inr?.toFixed(2) || '0.00'}</td>
