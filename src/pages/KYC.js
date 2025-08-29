@@ -14,7 +14,8 @@ const KYC = () => {
   const fetchKYC = async () => {
     try {
       const response = await adminAPI.getKYC();
-      setKycRecords(response.data);
+      const kycData = response.data.kyc || response.data || [];
+      setKycRecords(kycData);
     } catch (error) {
       console.error('Error fetching KYC records:', error);
     }

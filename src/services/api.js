@@ -22,7 +22,7 @@ export const adminAPI = {
   getWithdrawals: (page = 1, limit = 10) => api.get(`/withdrawals?page=${page}&limit=${limit}`),
   processWithdrawal: (withdrawalId, data) => api.put(`/withdrawals/${withdrawalId}`, data),
   getTransactions: (page = 1, limit = 10) => api.get(`/transactions?page=${page}&limit=${limit}`),
-  getKYC: () => api.get('/kyc'),
+  getKYC: (page = 1, limit = 10) => api.get(`/kyc?page=${page}&limit=${limit}`),
   getKYCById: (kycId) => api.get(`/kyc/${kycId}`),
   reviewKYC: (kycId, data) => api.put(`/kyc/${kycId}`, data),
   getSettings: () => api.get('/settings'),
