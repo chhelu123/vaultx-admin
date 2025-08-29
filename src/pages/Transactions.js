@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 import DateFilter from '../components/DateFilter';
-import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -55,12 +54,7 @@ const Transactions = () => {
   };
 
   if (loading) {
-    return (
-      <div>
-        <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Transaction History</h1>
-        <LoadingSkeleton type="table" rows={8} />
-      </div>
-    );
+    return <div>Loading transactions...</div>;
   }
 
   return (

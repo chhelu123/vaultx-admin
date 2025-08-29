@@ -121,18 +121,7 @@ const Analytics = () => {
   };
 
   if (loading) {
-    return (
-      <div>
-        <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>Advanced Analytics</h1>
-        <LoadingSkeleton type="cards" />
-        <div style={{ marginTop: '30px' }}>
-          <LoadingSkeleton type="default" />
-        </div>
-        <div style={{ marginTop: '30px' }}>
-          <LoadingSkeleton type="table" rows={5} />
-        </div>
-      </div>
-    );
+    return <div>Loading analytics...</div>;
   }
 
   return (

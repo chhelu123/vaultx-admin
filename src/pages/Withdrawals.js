@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 import DateFilter from '../components/DateFilter';
-import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const Withdrawals = () => {
   const [withdrawals, setWithdrawals] = useState([]);
@@ -78,12 +77,7 @@ const Withdrawals = () => {
   };
 
   if (loading) {
-    return (
-      <div>
-        <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Withdrawal Management</h1>
-        <LoadingSkeleton type="table" rows={6} />
-      </div>
-    );
+    return <div>Loading withdrawals...</div>;
   }
 
   return (

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 import DateFilter from '../components/DateFilter';
-import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({});
@@ -92,15 +91,7 @@ const Dashboard = () => {
   }, [startDate, endDate, allData]);
 
   if (loading) {
-    return (
-      <div>
-        <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Dashboard</h1>
-        <LoadingSkeleton type="cards" />
-        <div style={{ marginTop: '30px' }}>
-          <LoadingSkeleton type="default" />
-        </div>
-      </div>
-    );
+    return <div>Loading dashboard...</div>;
   }
 
   const statCards = [
