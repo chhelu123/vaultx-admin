@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 import DateFilter from '../components/DateFilter';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const Deposits = () => {
   const [deposits, setDeposits] = useState([]);
@@ -77,7 +78,12 @@ const Deposits = () => {
   };
 
   if (loading) {
-    return <div>Loading deposits...</div>;
+    return (
+      <div>
+        <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Deposit Management</h1>
+        <LoadingSkeleton type="table" rows={6} />
+      </div>
+    );
   }
 
   return (

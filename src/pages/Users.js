@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { adminAPI } from '../services/api';
 import UserDetailsModal from '../components/UserDetailsModal';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -59,7 +60,12 @@ const Users = () => {
   };
 
   if (loading) {
-    return <div>Loading users...</div>;
+    return (
+      <div>
+        <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>User Management</h1>
+        <LoadingSkeleton type="table" rows={8} />
+      </div>
+    );
   }
 
   return (
