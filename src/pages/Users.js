@@ -99,7 +99,9 @@ const Users = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user._id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                <td style={{ padding: '15px', fontFamily: 'monospace', fontSize: '12px', color: '#007bff' }}>{user._id}</td>
+                <td style={{ padding: '15px', fontFamily: 'monospace', fontSize: '12px', color: '#007bff' }} title={user._id}>
+                  {user._id.slice(0, 8)}...{user._id.slice(-4)}
+                </td>
                 <td style={{ padding: '15px' }}>{user.name}</td>
                 <td style={{ padding: '15px' }}>{user.email}</td>
                 <td style={{ padding: '15px' }}>₹{user.wallets?.inr?.toFixed(2) || '0.00'}</td>
