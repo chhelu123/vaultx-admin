@@ -27,6 +27,7 @@ export const adminAPI = {
   reviewKYC: (kycId, data) => api.put(`/kyc/${kycId}`, data),
   getSettings: () => api.get('/settings'),
   updateSettings: (data) => api.put('/settings', data),
+  getAnalytics: () => api.get('/analytics'),
 };
 
 export default api;

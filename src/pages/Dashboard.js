@@ -99,6 +99,7 @@ const Dashboard = () => {
     { title: 'Total Transactions', value: filteredStats.totalTransactions || 0, icon: '📋', color: '#2ecc71' },
     { title: 'Pending Deposits', value: filteredStats.pendingDeposits || 0, icon: '💰', color: '#f39c12' },
     { title: 'Pending Withdrawals', value: filteredStats.pendingWithdrawals || 0, icon: '💸', color: '#e74c3c' },
+    { title: 'Pending KYC', value: filteredStats.pendingKYC || 0, icon: '🆔', color: '#e67e22' },
     { title: 'Total Volume', value: `₹${filteredStats.totalVolume?.toLocaleString() || 0}`, icon: '💹', color: '#9b59b6' },
   ];
 
@@ -195,6 +196,20 @@ const Dashboard = () => {
             }}
           >
             📊 View Transactions
+          </button>
+          <button
+            onClick={() => window.location.href = '/kyc'}
+            style={{
+              padding: '15px',
+              backgroundColor: '#e67e22',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '16px',
+            }}
+          >
+            🆔 Review KYC
           </button>
         </div>
       </div>
