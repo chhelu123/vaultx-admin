@@ -50,8 +50,8 @@ const Analytics = () => {
         adminAPI.getUsers()
       ]);
 
-      const txData = transactions.data;
-      const userData = users.data;
+      const txData = transactions.data.transactions || transactions.data || [];
+      const userData = users.data.users || users.data || [];
 
       // Calculate revenue (assuming 1% fee on each transaction)
       const totalVolume = txData.reduce((sum, tx) => sum + (tx.total || 0), 0);
