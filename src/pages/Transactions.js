@@ -16,8 +16,9 @@ const Transactions = () => {
   const fetchTransactions = async () => {
     try {
       const response = await adminAPI.getTransactions();
-      setTransactions(response.data);
-      setFilteredTransactions(response.data);
+      const transactionsData = response.data.transactions || response.data;
+      setTransactions(transactionsData);
+      setFilteredTransactions(transactionsData);
     } catch (error) {
       console.error('Error fetching transactions:', error);
     }

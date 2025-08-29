@@ -18,8 +18,9 @@ const Withdrawals = () => {
   const fetchWithdrawals = async () => {
     try {
       const response = await adminAPI.getWithdrawals();
-      setWithdrawals(response.data);
-      setFilteredWithdrawals(response.data);
+      const withdrawalsData = response.data.withdrawals || response.data;
+      setWithdrawals(withdrawalsData);
+      setFilteredWithdrawals(withdrawalsData);
     } catch (error) {
       console.error('Error fetching withdrawals:', error);
     }

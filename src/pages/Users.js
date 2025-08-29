@@ -18,8 +18,9 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       const response = await adminAPI.getUsers();
-      setUsers(response.data);
-      setFilteredUsers(response.data);
+      const userData = response.data.users || response.data;
+      setUsers(userData);
+      setFilteredUsers(userData);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
