@@ -123,66 +123,131 @@ const KYC = () => {
           <div style={{ backgroundColor: 'white', padding: '30px', borderRadius: '10px', width: '90%', maxWidth: '800px', maxHeight: '90vh', overflow: 'auto' }}>
             <h3 style={{ marginBottom: '20px' }}>KYC Details - {viewingKYC.userId?.name}</h3>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-              <div>
-                <p><strong>Full Name:</strong> {viewingKYC.fullName}</p>
-                <p><strong>Date of Birth:</strong> {new Date(viewingKYC.dateOfBirth).toLocaleDateString()}</p>
-                <p><strong>Mobile Number:</strong> {viewingKYC.mobileNumber}</p>
-                <p><strong>Aadhar Number:</strong> {viewingKYC.aadharNumber}</p>
-                <p><strong>PAN Number:</strong> {viewingKYC.panNumber}</p>
-                <p><strong>Status:</strong> 
-                  <span style={{
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    color: 'white',
-                    fontSize: '12px',
-                    backgroundColor: getStatusColor(viewingKYC.status),
-                    marginLeft: '8px'
-                  }}>
-                    {viewingKYC.status.toUpperCase()}
-                  </span>
-                </p>
-              </div>
-              <div>
-                <p><strong>Submitted:</strong> {new Date(viewingKYC.submittedAt).toLocaleString()}</p>
-                {viewingKYC.reviewedAt && (
-                  <p><strong>Reviewed:</strong> {new Date(viewingKYC.reviewedAt).toLocaleString()}</p>
-                )}
-                {viewingKYC.adminNotes && (
-                  <p><strong>Admin Notes:</strong> {viewingKYC.adminNotes}</p>
-                )}
+            {/* Personal Information */}
+            <div style={{ marginBottom: '24px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+              <h4 style={{ marginBottom: '16px', color: '#2c3e50', borderBottom: '2px solid #3498db', paddingBottom: '8px' }}>Personal Information</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <p style={{ margin: '8px 0' }}><strong>Full Name:</strong> {viewingKYC.fullName}</p>
+                  <p style={{ margin: '8px 0' }}><strong>Date of Birth:</strong> {new Date(viewingKYC.dateOfBirth).toLocaleDateString()}</p>
+                  <p style={{ margin: '8px 0' }}><strong>Mobile Number:</strong> {viewingKYC.mobileNumber}</p>
+                </div>
+                <div>
+                  <p style={{ margin: '8px 0' }}><strong>Aadhar Number:</strong> {viewingKYC.aadharNumber}</p>
+                  <p style={{ margin: '8px 0' }}><strong>PAN Number:</strong> {viewingKYC.panNumber}</p>
+                  <p style={{ margin: '8px 0' }}><strong>Status:</strong> 
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      color: 'white',
+                      fontSize: '12px',
+                      backgroundColor: getStatusColor(viewingKYC.status),
+                      marginLeft: '8px'
+                    }}>
+                      {viewingKYC.status.toUpperCase()}
+                    </span>
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '20px' }}>
-              <div>
-                <h4>Aadhar Document</h4>
-                <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '10px', textAlign: 'center' }}>
-                  {viewingKYC.aadharDocument ? (
-                    <img 
-                      src={viewingKYC.aadharDocument.startsWith('data:') ? viewingKYC.aadharDocument : `data:image/jpeg;base64,${viewingKYC.aadharDocument}`}
-                      alt="Aadhar Document"
-                      style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer' }}
-                      onClick={() => window.open(viewingKYC.aadharDocument.startsWith('data:') ? viewingKYC.aadharDocument : `data:image/jpeg;base64,${viewingKYC.aadharDocument}`, '_blank')}
-                    />
-                  ) : (
-                    <p style={{ color: '#999' }}>No document uploaded</p>
+            {/* Address Information */}
+            <div style={{ marginBottom: '24px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+              <h4 style={{ marginBottom: '16px', color: '#2c3e50', borderBottom: '2px solid #3498db', paddingBottom: '8px' }}>Address Information</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <p style={{ margin: '8px 0' }}><strong>Street Address:</strong> {viewingKYC.streetAddress || 'Not provided'}</p>
+                  <p style={{ margin: '8px 0' }}><strong>City:</strong> {viewingKYC.city || 'Not provided'}</p>
+                </div>
+                <div>
+                  <p style={{ margin: '8px 0' }}><strong>State:</strong> {viewingKYC.state || 'Not provided'}</p>
+                  <p style={{ margin: '8px 0' }}><strong>PIN Code:</strong> {viewingKYC.pincode || 'Not provided'}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Review Information */}
+            <div style={{ marginBottom: '24px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+              <h4 style={{ marginBottom: '16px', color: '#2c3e50', borderBottom: '2px solid #3498db', paddingBottom: '8px' }}>Review Information</h4>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                <div>
+                  <p style={{ margin: '8px 0' }}><strong>Submitted:</strong> {new Date(viewingKYC.submittedAt).toLocaleString()}</p>
+                  {viewingKYC.reviewedAt && (
+                    <p style={{ margin: '8px 0' }}><strong>Reviewed:</strong> {new Date(viewingKYC.reviewedAt).toLocaleString()}</p>
+                  )}
+                </div>
+                <div>
+                  {viewingKYC.adminNotes && (
+                    <p style={{ margin: '8px 0' }}><strong>Admin Notes:</strong> {viewingKYC.adminNotes}</p>
                   )}
                 </div>
               </div>
+            </div>
+
+            {/* Document Verification */}
+            <div style={{ marginBottom: '24px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+              <h4 style={{ marginBottom: '16px', color: '#2c3e50', borderBottom: '2px solid #3498db', paddingBottom: '8px' }}>Document Verification</h4>
+              
+              {/* Aadhar Documents */}
+              <div style={{ marginBottom: '20px' }}>
+                <h5 style={{ marginBottom: '12px', color: '#34495e' }}>Aadhar Card Documents</h5>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                  <div>
+                    <h6 style={{ marginBottom: '8px', fontSize: '14px', color: '#7f8c8d' }}>Front Side with Selfie</h6>
+                    <div style={{ border: '2px solid #ddd', borderRadius: '8px', padding: '12px', textAlign: 'center', backgroundColor: 'white' }}>
+                      {viewingKYC.aadharFrontWithSelfie ? (
+                        <img 
+                          src={viewingKYC.aadharFrontWithSelfie.startsWith('data:') ? viewingKYC.aadharFrontWithSelfie : `data:image/jpeg;base64,${viewingKYC.aadharFrontWithSelfie}`}
+                          alt="Aadhar Front with Selfie"
+                          style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer', borderRadius: '4px' }}
+                          onClick={() => window.open(viewingKYC.aadharFrontWithSelfie.startsWith('data:') ? viewingKYC.aadharFrontWithSelfie : `data:image/jpeg;base64,${viewingKYC.aadharFrontWithSelfie}`, '_blank')}
+                        />
+                      ) : viewingKYC.aadharDocument ? (
+                        <img 
+                          src={viewingKYC.aadharDocument.startsWith('data:') ? viewingKYC.aadharDocument : `data:image/jpeg;base64,${viewingKYC.aadharDocument}`}
+                          alt="Aadhar Document (Legacy)"
+                          style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer', borderRadius: '4px' }}
+                          onClick={() => window.open(viewingKYC.aadharDocument.startsWith('data:') ? viewingKYC.aadharDocument : `data:image/jpeg;base64,${viewingKYC.aadharDocument}`, '_blank')}
+                        />
+                      ) : (
+                        <p style={{ color: '#999', margin: '20px 0' }}>No document uploaded</p>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <h6 style={{ marginBottom: '8px', fontSize: '14px', color: '#7f8c8d' }}>Back Side with Selfie</h6>
+                    <div style={{ border: '2px solid #ddd', borderRadius: '8px', padding: '12px', textAlign: 'center', backgroundColor: 'white' }}>
+                      {viewingKYC.aadharBackWithSelfie ? (
+                        <img 
+                          src={viewingKYC.aadharBackWithSelfie.startsWith('data:') ? viewingKYC.aadharBackWithSelfie : `data:image/jpeg;base64,${viewingKYC.aadharBackWithSelfie}`}
+                          alt="Aadhar Back with Selfie"
+                          style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer', borderRadius: '4px' }}
+                          onClick={() => window.open(viewingKYC.aadharBackWithSelfie.startsWith('data:') ? viewingKYC.aadharBackWithSelfie : `data:image/jpeg;base64,${viewingKYC.aadharBackWithSelfie}`, '_blank')}
+                        />
+                      ) : (
+                        <p style={{ color: '#999', margin: '20px 0' }}>No document uploaded</p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* PAN Document */}
               <div>
-                <h4>PAN Document</h4>
-                <div style={{ border: '1px solid #ddd', borderRadius: '4px', padding: '10px', textAlign: 'center' }}>
-                  {viewingKYC.panDocument ? (
-                    <img 
-                      src={viewingKYC.panDocument.startsWith('data:') ? viewingKYC.panDocument : `data:image/jpeg;base64,${viewingKYC.panDocument}`}
-                      alt="PAN Document"
-                      style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer' }}
-                      onClick={() => window.open(viewingKYC.panDocument.startsWith('data:') ? viewingKYC.panDocument : `data:image/jpeg;base64,${viewingKYC.panDocument}`, '_blank')}
-                    />
-                  ) : (
-                    <p style={{ color: '#999' }}>No document uploaded</p>
-                  )}
+                <h5 style={{ marginBottom: '12px', color: '#34495e' }}>PAN Card Document</h5>
+                <div style={{ maxWidth: '400px' }}>
+                  <div style={{ border: '2px solid #ddd', borderRadius: '8px', padding: '12px', textAlign: 'center', backgroundColor: 'white' }}>
+                    {viewingKYC.panDocument ? (
+                      <img 
+                        src={viewingKYC.panDocument.startsWith('data:') ? viewingKYC.panDocument : `data:image/jpeg;base64,${viewingKYC.panDocument}`}
+                        alt="PAN Document"
+                        style={{ maxWidth: '100%', maxHeight: '200px', cursor: 'pointer', borderRadius: '4px' }}
+                        onClick={() => window.open(viewingKYC.panDocument.startsWith('data:') ? viewingKYC.panDocument : `data:image/jpeg;base64,${viewingKYC.panDocument}`, '_blank')}
+                      />
+                    ) : (
+                      <p style={{ color: '#999', margin: '20px 0' }}>No document uploaded</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
