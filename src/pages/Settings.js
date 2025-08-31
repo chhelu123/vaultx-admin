@@ -50,7 +50,7 @@ const Settings = () => {
 
   return (
     <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ color: '#ffffff', marginBottom: '30px' }}>Platform Settings</h1>
+      <h1 style={{ color: '#2c3e50', marginBottom: '30px' }}>Platform Settings</h1>
       
       {message && (
         <div style={{
@@ -67,16 +67,17 @@ const Settings = () => {
       <form onSubmit={handleSubmit}>
         {/* INR Payment Settings */}
         <div style={{ 
-          backgroundColor: '#2b3139', 
+          backgroundColor: 'white', 
           padding: '24px', 
           borderRadius: '12px', 
           marginBottom: '24px',
-          border: '1px solid #474d57'
+          border: '1px solid #dee2e6',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ color: '#ffffff', marginBottom: '20px' }}>INR Payment Settings</h3>
+          <h3 style={{ color: '#2c3e50', marginBottom: '20px' }}>INR Payment Settings</h3>
           
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+            <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
               UPI ID
             </label>
             <input
@@ -88,10 +89,10 @@ const Settings = () => {
               style={{
                 width: '100%',
                 padding: '12px',
-                backgroundColor: '#1e2329',
-                border: '1px solid #474d57',
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: '#2c3e50',
                 fontSize: '16px'
               }}
             />
@@ -99,7 +100,7 @@ const Settings = () => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
             <div>
-              <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
                 Bank Account Number
               </label>
               <input
@@ -111,17 +112,17 @@ const Settings = () => {
                 style={{
                   width: '100%',
                   padding: '12px',
-                  backgroundColor: '#1e2329',
-                  border: '1px solid #474d57',
+                  backgroundColor: 'white',
+                  border: '1px solid #ddd',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: '#2c3e50',
                   fontSize: '16px'
                 }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
                 IFSC Code
               </label>
               <input
@@ -133,17 +134,17 @@ const Settings = () => {
                 style={{
                   width: '100%',
                   padding: '12px',
-                  backgroundColor: '#1e2329',
-                  border: '1px solid #474d57',
+                  backgroundColor: 'white',
+                  border: '1px solid #ddd',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: '#2c3e50',
                   fontSize: '16px'
                 }}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
                 Bank Name
               </label>
               <input
@@ -155,10 +156,10 @@ const Settings = () => {
                 style={{
                   width: '100%',
                   padding: '12px',
-                  backgroundColor: '#1e2329',
-                  border: '1px solid #474d57',
+                  backgroundColor: 'white',
+                  border: '1px solid #ddd',
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: '#2c3e50',
                   fontSize: '16px'
                 }}
               />
@@ -168,16 +169,17 @@ const Settings = () => {
 
         {/* USDT Wallet Addresses */}
         <div style={{ 
-          backgroundColor: '#2b3139', 
+          backgroundColor: 'white', 
           padding: '24px', 
           borderRadius: '12px', 
           marginBottom: '24px',
-          border: '1px solid #474d57'
+          border: '1px solid #dee2e6',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          <h3 style={{ color: '#ffffff', marginBottom: '20px' }}>USDT Wallet Addresses</h3>
+          <h3 style={{ color: '#2c3e50', marginBottom: '20px' }}>USDT Wallet Addresses</h3>
           
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+            <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
               TRC-20 Address (Tron Network)
             </label>
             <input
@@ -189,10 +191,10 @@ const Settings = () => {
               style={{
                 width: '100%',
                 padding: '12px',
-                backgroundColor: '#1e2329',
-                border: '1px solid #474d57',
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: '#2c3e50',
                 fontSize: '16px',
                 fontFamily: 'monospace'
               }}
@@ -200,7 +202,7 @@ const Settings = () => {
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+            <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
               BEP-20 Address (BSC Network)
             </label>
             <input
@@ -212,10 +214,10 @@ const Settings = () => {
               style={{
                 width: '100%',
                 padding: '12px',
-                backgroundColor: '#1e2329',
-                border: '1px solid #474d57',
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: '#2c3e50',
                 fontSize: '16px',
                 fontFamily: 'monospace'
               }}
@@ -223,7 +225,7 @@ const Settings = () => {
           </div>
 
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+            <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
               Aptos Network Address
             </label>
             <input
@@ -235,10 +237,10 @@ const Settings = () => {
               style={{
                 width: '100%',
                 padding: '12px',
-                backgroundColor: '#1e2329',
-                border: '1px solid #474d57',
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
                 borderRadius: '8px',
-                color: '#ffffff',
+                color: '#2c3e50',
                 fontSize: '16px',
                 fontFamily: 'monospace'
               }}
@@ -252,8 +254,8 @@ const Settings = () => {
           style={{
             width: '100%',
             padding: '16px',
-            backgroundColor: loading ? '#848e9c' : '#fcd535',
-            color: '#000',
+            backgroundColor: loading ? '#95a5a6' : '#2ecc71',
+            color: 'white',
             border: 'none',
             borderRadius: '12px',
             fontSize: '16px',

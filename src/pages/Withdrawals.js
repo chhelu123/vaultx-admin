@@ -99,7 +99,7 @@ const Withdrawals = () => {
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>User</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Type</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Amount</th>
-              <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Method</th>
+              <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Chain</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Withdrawal Details</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Status</th>
               <th style={{ padding: '15px', textAlign: 'left', borderBottom: '1px solid #dee2e6' }}>Date</th>
@@ -114,7 +114,20 @@ const Withdrawals = () => {
                 <td style={{ padding: '15px' }}>
                   {withdrawal.type === 'inr' ? `₹${withdrawal.amount}` : `${withdrawal.amount} USDT`}
                 </td>
-                <td style={{ padding: '15px' }}>{withdrawal.paymentMethod || 'N/A'}</td>
+                <td style={{ padding: '15px' }}>
+                  {withdrawal.type === 'usdt' ? (
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      backgroundColor: '#e3f2fd',
+                      color: '#1976d2',
+                      fontSize: '12px',
+                      fontWeight: '600'
+                    }}>
+                      {(withdrawal.chain || 'trc20').toUpperCase()}
+                    </span>
+                  ) : 'N/A'}
+                </td>
                 <td style={{ padding: '15px', fontSize: '12px', maxWidth: '200px', wordBreak: 'break-all' }}>
                   {withdrawal.withdrawalDetails}
                 </td>
@@ -159,6 +172,9 @@ const Withdrawals = () => {
             <h3>Process Withdrawal</h3>
             <p><strong>User:</strong> {processingWithdrawal.userId?.name}</p>
             <p><strong>Amount:</strong> {processingWithdrawal.type === 'inr' ? `₹${processingWithdrawal.amount}` : `${processingWithdrawal.amount} USDT`}</p>
+            {processingWithdrawal.type === 'usdt' && (
+              <p><strong>Chain:</strong> {(processingWithdrawal.chain || 'trc20').toUpperCase()}</p>
+            )}
             <p><strong>Details:</strong> {processingWithdrawal.withdrawalDetails}</p>
             
             <div style={{ marginBottom: '20px', marginTop: '20px' }}>
