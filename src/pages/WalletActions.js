@@ -46,11 +46,14 @@ const WalletActions = () => {
       } else {
         await adminAPI.processWithdrawal(processingItem._id, actionForm);
       }
-      alert('Action processed successfully!');
+      // Only process if no error occurred
+      alert('Wallet action processed successfully!');
       setProcessingItem(null);
       fetchWalletActions();
     } catch (error) {
-      alert('Error processing action');
+      console.error('Wallet action error:', error);
+      // Show actual error and don't process
+      alert(`Error processing action: ${error.response?.data?.message || error.message || 'Unknown error'}`);
     }
   };
 

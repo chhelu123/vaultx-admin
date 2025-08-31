@@ -104,7 +104,7 @@ const Deposits = () => {
 
   return (
     <div>
-      <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Deposit Management</h1>
+      <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Trade - Buy USDT</h1>
       
       <DateFilter
         startDate={startDate}
