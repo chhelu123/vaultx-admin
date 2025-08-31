@@ -24,11 +24,14 @@ const Deposits = () => {
       const depositsData = response.data.deposits || response.data;
       const pagination = response.data.pagination;
       
+      // Filter to only show trading requests (buy USDT) - exclude regular USDT deposits
+      const tradingDeposits = depositsData.filter(d => d.buyDetails || d.type === 'inr');
+      
       if (append) {
-        setDeposits(prev => [...prev, ...depositsData]);
+        setDeposits(prev => [...prev, ...tradingDeposits]);
       } else {
-        setDeposits(depositsData);
-        setFilteredDeposits(depositsData);
+        setDeposits(tradingDeposits);
+        setFilteredDeposits(tradingDeposits);
       }
       
       setHasMore(pagination?.hasNext || false);

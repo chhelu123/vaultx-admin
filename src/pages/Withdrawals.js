@@ -24,11 +24,14 @@ const Withdrawals = () => {
       const withdrawalsData = response.data.withdrawals || response.data;
       const pagination = response.data.pagination;
       
+      // Filter to only show trading requests (sell USDT) - exclude regular USDT withdrawals
+      const tradingWithdrawals = withdrawalsData.filter(w => w.sellDetails || w.type === 'inr');
+      
       if (append) {
-        setWithdrawals(prev => [...prev, ...withdrawalsData]);
+        setWithdrawals(prev => [...prev, ...tradingWithdrawals]);
       } else {
-        setWithdrawals(withdrawalsData);
-        setFilteredWithdrawals(withdrawalsData);
+        setWithdrawals(tradingWithdrawals);
+        setFilteredWithdrawals(tradingWithdrawals);
       }
       
       setHasMore(pagination?.hasNext || false);
