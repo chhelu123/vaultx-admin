@@ -10,6 +10,7 @@ const Sidebar = () => {
     { path: '/kyc', label: 'KYC Verification', icon: '🆔' },
     { path: '/deposits', label: 'Deposits', icon: '💰' },
     { path: '/withdrawals', label: 'Withdrawals', icon: '💸' },
+    { path: '/wallet-actions', label: 'Wallet Actions', icon: '🔄' },
     { path: '/transactions', label: 'Transactions', icon: '📋' },
     { path: '/analytics', label: 'Analytics', icon: '📊' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },

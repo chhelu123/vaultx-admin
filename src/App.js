@@ -8,6 +8,7 @@ import Withdrawals from './pages/Withdrawals';
 import Transactions from './pages/Transactions';
 import KYC from './pages/KYC';
 import Settings from './pages/Settings';
+import WalletActions from './pages/WalletActions';
 import Analytics from './pages/Analytics';
 import Sidebar from './components/Sidebar';
 
@@ -41,6 +42,7 @@ function App() {
             <Route path="/withdrawals" element={<Withdrawals />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/kyc" element={<KYC />} />
+            <Route path="/wallet-actions" element={<WalletActions />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="*" element={<Navigate to="/" />} />
