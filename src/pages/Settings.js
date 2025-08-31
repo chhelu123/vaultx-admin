@@ -9,7 +9,9 @@ const Settings = () => {
     bankName: '',
     trc20Address: '',
     bep20Address: '',
-    aptosAddress: ''
+    aptosAddress: '',
+    buyRate: 92,
+    sellRate: 89
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -153,6 +155,64 @@ const Settings = () => {
                 value={settings.bankName}
                 onChange={handleChange}
                 placeholder="Enter bank name"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  backgroundColor: 'white',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  color: '#2c3e50',
+                  fontSize: '16px'
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Trading Rates */}
+        <div style={{ 
+          backgroundColor: 'white', 
+          padding: '24px', 
+          borderRadius: '12px', 
+          marginBottom: '24px',
+          border: '1px solid #dee2e6',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}>
+          <h3 style={{ color: '#2c3e50', marginBottom: '20px' }}>USDT Trading Rates</h3>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+            <div>
+              <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
+                Buy Rate (₹ per USDT)
+              </label>
+              <input
+                type="number"
+                name="buyRate"
+                value={settings.buyRate}
+                onChange={handleChange}
+                placeholder="Enter buy rate"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  backgroundColor: 'white',
+                  border: '1px solid #ddd',
+                  borderRadius: '8px',
+                  color: '#2c3e50',
+                  fontSize: '16px'
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', color: '#2c3e50', marginBottom: '8px', fontWeight: '600' }}>
+                Sell Rate (₹ per USDT)
+              </label>
+              <input
+                type="number"
+                name="sellRate"
+                value={settings.sellRate}
+                onChange={handleChange}
+                placeholder="Enter sell rate"
                 style={{
                   width: '100%',
                   padding: '12px',
