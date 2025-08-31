@@ -33,9 +33,9 @@ function App() {
 
   return (
     <Router>
-      <div style={{ display: 'flex', height: '100vh' }}>
+      <div style={{ display: 'flex', height: '100vh', flexDirection: window.innerWidth <= 768 ? 'column' : 'row' }}>
         <Sidebar />
-        <div style={{ flex: 1, overflow: 'auto', padding: '20px' }}>
+        <div style={{ flex: 1, overflow: 'auto', padding: window.innerWidth <= 768 ? '10px' : '20px' }}>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/users" element={<Users />} />

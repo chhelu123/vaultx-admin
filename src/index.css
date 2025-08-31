@@ -1,0 +1,80 @@
+/* Mobile responsive styles for admin panel */
+@media (max-width: 768px) {
+  /* Make tables horizontally scrollable */
+  .admin-table-container {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .admin-table {
+    min-width: 800px !important;
+    font-size: 14px !important;
+  }
+  
+  .admin-table th,
+  .admin-table td {
+    padding: 8px !important;
+    white-space: nowrap;
+  }
+  
+  /* Modal responsive */
+  .admin-modal {
+    width: 95% !important;
+    max-width: 95% !important;
+    margin: 10px !important;
+    max-height: 90vh !important;
+  }
+  
+  /* Button responsive */
+  .admin-button {
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+  }
+  
+  /* Form responsive */
+  .admin-form-group {
+    margin-bottom: 15px !important;
+  }
+  
+  .admin-input,
+  .admin-select,
+  .admin-textarea {
+    padding: 12px !important;
+    font-size: 16px !important; /* Prevent zoom on iOS */
+  }
+}
+
+/* Base styles */
+.admin-table-container {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.admin-modal-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}

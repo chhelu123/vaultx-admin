@@ -21,26 +21,45 @@ const Sidebar = () => {
   };
 
   return (
-    <div style={{ width: '250px', backgroundColor: '#2c3e50', color: 'white', padding: '20px', position: 'relative', display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <div style={{ 
+      width: window.innerWidth <= 768 ? '100%' : '250px', 
+      height: window.innerWidth <= 768 ? 'auto' : '100vh',
+      backgroundColor: '#2c3e50', 
+      color: 'white', 
+      padding: window.innerWidth <= 768 ? '10px' : '20px', 
+      position: 'relative', 
+      display: 'flex', 
+      flexDirection: window.innerWidth <= 768 ? 'row' : 'column',
+      overflowX: window.innerWidth <= 768 ? 'auto' : 'visible'
+    }}>
       <h2 style={{ marginBottom: '30px', textAlign: 'center' }}>Admin Panel</h2>
       
-      <nav style={{ flex: 1 }}>
+      <nav style={{ 
+        flex: 1, 
+        display: 'flex', 
+        flexDirection: window.innerWidth <= 768 ? 'row' : 'column',
+        gap: window.innerWidth <= 768 ? '10px' : '0',
+        overflowX: window.innerWidth <= 768 ? 'auto' : 'visible',
+        whiteSpace: window.innerWidth <= 768 ? 'nowrap' : 'normal'
+      }}>
         {menuItems.map((item) => (
           <Link
             key={item.path}
             to={item.path}
             style={{
-              display: 'block',
-              padding: '12px 16px',
+              display: window.innerWidth <= 768 ? 'inline-block' : 'block',
+              padding: window.innerWidth <= 768 ? '8px 12px' : '12px 16px',
               color: 'white',
               textDecoration: 'none',
               borderRadius: '8px',
-              marginBottom: '8px',
+              marginBottom: window.innerWidth <= 768 ? '0' : '8px',
               backgroundColor: location.pathname === item.path ? '#34495e' : 'transparent',
+              fontSize: window.innerWidth <= 768 ? '14px' : '16px',
+              minWidth: window.innerWidth <= 768 ? 'max-content' : 'auto'
             }}
           >
-            <span style={{ marginRight: '10px' }}>{item.icon}</span>
-            {item.label}
+            <span style={{ marginRight: window.innerWidth <= 768 ? '5px' : '10px' }}>{item.icon}</span>
+            {window.innerWidth <= 768 ? '' : item.label}
           </Link>
         ))}
       </nav>
