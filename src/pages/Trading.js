@@ -168,6 +168,7 @@ const Trading = () => {
               ))}
             </tbody>
           </table>
+          </div>
           {deposits.length === 0 && (
             <div style={{ padding: '40px', textAlign: 'center', color: '#7f8c8d' }}>
               No buy requests found
@@ -238,6 +239,7 @@ const Trading = () => {
               ))}
             </tbody>
           </table>
+          </div>
           {withdrawals.length === 0 && (
             <div style={{ padding: '40px', textAlign: 'center', color: '#7f8c8d' }}>
               No sell requests found
