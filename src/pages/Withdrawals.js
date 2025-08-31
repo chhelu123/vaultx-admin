@@ -6,6 +6,9 @@ const Withdrawals = () => {
   const [withdrawals, setWithdrawals] = useState([]);
   const [filteredWithdrawals, setFilteredWithdrawals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [processingWithdrawal, setProcessingWithdrawal] = useState(null);
@@ -15,16 +18,32 @@ const Withdrawals = () => {
     fetchWithdrawals();
   }, []);
 
-  const fetchWithdrawals = async () => {
+  const fetchWithdrawals = async (page = 1, append = false) => {
     try {
-      const response = await adminAPI.getWithdrawals();
+      const response = await adminAPI.getWithdrawals(page, 50);
       const withdrawalsData = response.data.withdrawals || response.data;
-      setWithdrawals(withdrawalsData);
-      setFilteredWithdrawals(withdrawalsData);
+      const pagination = response.data.pagination;
+      
+      if (append) {
+        setWithdrawals(prev => [...prev, ...withdrawalsData]);
+      } else {
+        setWithdrawals(withdrawalsData);
+        setFilteredWithdrawals(withdrawalsData);
+      }
+      
+      setHasMore(pagination?.hasNext || false);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching withdrawals:', error);
     }
     setLoading(false);
+    setLoadingMore(false);
+  };
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    const nextPage = currentPage + 1;
+    await fetchWithdrawals(nextPage, true);
   };
 
   const filterByDate = () => {
@@ -165,6 +184,27 @@ const Withdrawals = () => {
           </tbody>
         </table>
       </div>
+
+      {hasMore && !startDate && !endDate && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: loadingMore ? '#95a5a6' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: loadingMore ? 'not-allowed' : 'pointer',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
+            {loadingMore ? 'Loading...' : 'Load More'}
+          </button>
+        </div>
+      )}
 
       {processingWithdrawal && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>

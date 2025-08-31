@@ -6,6 +6,9 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [editingUser, setEditingUser] = useState(null);
   const [walletForm, setWalletForm] = useState({ inr: 0, usdt: 0 });
   const [selectedUser, setSelectedUser] = useState(null);
@@ -15,16 +18,33 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (page = 1, append = false) => {
     try {
-      const response = await adminAPI.getUsers();
+      const response = await adminAPI.getUsers(page, 50);
       const userData = response.data.users || response.data;
-      setUsers(userData);
-      setFilteredUsers(userData);
+      const pagination = response.data.pagination;
+      
+      if (append) {
+        setUsers(prev => [...prev, ...userData]);
+        if (!searchTerm) setFilteredUsers(prev => [...prev, ...userData]);
+      } else {
+        setUsers(userData);
+        setFilteredUsers(userData);
+      }
+      
+      setHasMore(pagination?.hasNext || false);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching users:', error);
     }
     setLoading(false);
+    setLoadingMore(false);
+  };
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    const nextPage = currentPage + 1;
+    await fetchUsers(nextPage, true);
   };
 
   const handleSearch = (term) => {
@@ -141,6 +161,27 @@ const Users = () => {
           </tbody>
         </table>
       </div>
+
+      {hasMore && !searchTerm && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: loadingMore ? '#95a5a6' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: loadingMore ? 'not-allowed' : 'pointer',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
+            {loadingMore ? 'Loading...' : 'Load More Users'}
+          </button>
+        </div>
+      )}
 
       {editingUser && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>

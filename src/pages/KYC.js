@@ -4,6 +4,9 @@ import { adminAPI } from '../services/api';
 const KYC = () => {
   const [kycRecords, setKycRecords] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [viewingKYC, setViewingKYC] = useState(null);
   const [reviewForm, setReviewForm] = useState({ status: 'approved', adminNotes: '' });
 
@@ -11,15 +14,31 @@ const KYC = () => {
     fetchKYC();
   }, []);
 
-  const fetchKYC = async () => {
+  const fetchKYC = async (page = 1, append = false) => {
     try {
-      const response = await adminAPI.getKYC();
+      const response = await adminAPI.getKYC(page, 50);
       const kycData = response.data.kyc || response.data || [];
-      setKycRecords(kycData);
+      const pagination = response.data.pagination;
+      
+      if (append) {
+        setKycRecords(prev => [...prev, ...kycData]);
+      } else {
+        setKycRecords(kycData);
+      }
+      
+      setHasMore(pagination?.hasNext || false);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching KYC records:', error);
     }
     setLoading(false);
+    setLoadingMore(false);
+  };
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    const nextPage = currentPage + 1;
+    await fetchKYC(nextPage, true);
   };
 
   const handleViewKYC = async (kycId) => {
@@ -117,6 +136,27 @@ const KYC = () => {
           </div>
         )}
       </div>
+
+      {hasMore && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: loadingMore ? '#95a5a6' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: loadingMore ? 'not-allowed' : 'pointer',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
+            {loadingMore ? 'Loading...' : 'Load More KYC Records'}
+          </button>
+        </div>
+      )}
 
       {viewingKYC && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, overflow: 'auto' }}>

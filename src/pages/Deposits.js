@@ -6,6 +6,9 @@ const Deposits = () => {
   const [deposits, setDeposits] = useState([]);
   const [filteredDeposits, setFilteredDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [processingDeposit, setProcessingDeposit] = useState(null);
@@ -15,16 +18,32 @@ const Deposits = () => {
     fetchDeposits();
   }, []);
 
-  const fetchDeposits = async () => {
+  const fetchDeposits = async (page = 1, append = false) => {
     try {
-      const response = await adminAPI.getDeposits();
+      const response = await adminAPI.getDeposits(page, 50);
       const depositsData = response.data.deposits || response.data;
-      setDeposits(depositsData);
-      setFilteredDeposits(depositsData);
+      const pagination = response.data.pagination;
+      
+      if (append) {
+        setDeposits(prev => [...prev, ...depositsData]);
+      } else {
+        setDeposits(depositsData);
+        setFilteredDeposits(depositsData);
+      }
+      
+      setHasMore(pagination?.hasNext || false);
+      setCurrentPage(page);
     } catch (error) {
       console.error('Error fetching deposits:', error);
     }
     setLoading(false);
+    setLoadingMore(false);
+  };
+
+  const loadMore = async () => {
+    setLoadingMore(true);
+    const nextPage = currentPage + 1;
+    await fetchDeposits(nextPage, true);
   };
 
   const filterByDate = () => {
@@ -150,6 +169,27 @@ const Deposits = () => {
           </tbody>
         </table>
       </div>
+
+      {hasMore && !startDate && !endDate && (
+        <div style={{ textAlign: 'center', marginTop: '20px' }}>
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            style={{
+              padding: '12px 24px',
+              backgroundColor: loadingMore ? '#95a5a6' : '#3498db',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: loadingMore ? 'not-allowed' : 'pointer',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}
+          >
+            {loadingMore ? 'Loading...' : 'Load More Deposits'}
+          </button>
+        </div>
+      )}
 
       {processingDeposit && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
