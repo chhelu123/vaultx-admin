@@ -217,6 +217,15 @@ const Withdrawals = () => {
             )}
             <p><strong>Details:</strong> {processingWithdrawal.withdrawalDetails}</p>
             
+            {processingWithdrawal.sellDetails && (
+              <div style={{ marginTop: '15px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                <h4 style={{ marginBottom: '10px', color: '#2c3e50' }}>Sell USDT Details</h4>
+                <p><strong>USDT Amount:</strong> {processingWithdrawal.sellDetails.usdtAmount?.toFixed(6)} USDT</p>
+                <p><strong>INR Amount to Pay:</strong> ₹{processingWithdrawal.sellDetails.inrAmount?.toFixed(2)}</p>
+                <p><strong>Rate:</strong> ₹{processingWithdrawal.sellDetails.rate} per USDT</p>
+              </div>
+            )}
+            
             <div style={{ marginBottom: '20px', marginTop: '20px' }}>
               <label style={{ display: 'block', marginBottom: '5px' }}>Action</label>
               <select

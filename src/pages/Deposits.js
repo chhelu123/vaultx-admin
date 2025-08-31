@@ -199,6 +199,15 @@ const Deposits = () => {
             <p><strong>Amount:</strong> {processingDeposit.type === 'inr' ? `₹${processingDeposit.amount}` : `${processingDeposit.amount} USDT`}</p>
             <p><strong>Transaction ID:</strong> {processingDeposit.transactionId}</p>
             
+            {processingDeposit.buyDetails && (
+              <div style={{ marginTop: '15px', padding: '15px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+                <h4 style={{ marginBottom: '10px', color: '#2c3e50' }}>Buy USDT Details</h4>
+                <p><strong>USDT Amount:</strong> {processingDeposit.buyDetails.usdtAmount?.toFixed(6)} USDT</p>
+                <p><strong>INR Amount Paid:</strong> ₹{processingDeposit.buyDetails.inrAmount?.toFixed(2)}</p>
+                <p><strong>Rate:</strong> ₹{processingDeposit.buyDetails.rate} per USDT</p>
+              </div>
+            )}
+            
             <div style={{ marginBottom: '20px', marginTop: '20px' }}>
               <label style={{ display: 'block', marginBottom: '5px' }}>Action</label>
               <select
