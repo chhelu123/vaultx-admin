@@ -3,16 +3,16 @@ import { adminAPI } from '../services/api';
 
 const Settings = () => {
   const [settings, setSettings] = useState({
-    buyPrice: 92,
-    sellPrice: 89,
-    upiId: 'chhelu@paytm',
-    bankAccount: '1234567890',
-    bankIFSC: 'HDFC0001234',
-    bankName: 'P2P Trading',
-    usdtAddress: 'TQn9Y2khEsLMWD5uP5sVxnzeLcEwQQhAvh'
+    upiId: '',
+    bankAccount: '',
+    bankIFSC: '',
+    bankName: '',
+    trc20Address: '',
+    bep20Address: '',
+    aptosAddress: ''
   });
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     fetchSettings();
@@ -25,128 +25,246 @@ const Settings = () => {
     } catch (error) {
       console.error('Error fetching settings:', error);
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await adminAPI.updateSettings(settings);
+      setMessage('Settings updated successfully!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (error) {
+      setMessage('Error updating settings');
+      setTimeout(() => setMessage(''), 3000);
+    }
     setLoading(false);
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    try {
-      await adminAPI.updateSettings(settings);
-      alert('Settings updated successfully!');
-    } catch (error) {
-      alert('Error updating settings');
-    }
-    setSaving(false);
+  const handleChange = (e) => {
+    setSettings({
+      ...settings,
+      [e.target.name]: e.target.value
+    });
   };
 
-  if (loading) {
-    return <div>Loading settings...</div>;
-  }
-
   return (
-    <div>
-      <h1 style={{ marginBottom: '30px', color: '#2c3e50' }}>Platform Settings</h1>
+    <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <h1 style={{ color: '#ffffff', marginBottom: '30px' }}>Platform Settings</h1>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
-        <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ marginBottom: '20px', color: '#2c3e50' }}>Trading Rates</h3>
-          
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Buy Price (₹)</label>
-            <input
-              type="number"
-              value={settings.buyPrice}
-              onChange={(e) => setSettings({ ...settings, buyPrice: parseFloat(e.target.value) })}
-              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Sell Price (₹)</label>
-            <input
-              type="number"
-              value={settings.sellPrice}
-              onChange={(e) => setSettings({ ...settings, sellPrice: parseFloat(e.target.value) })}
-              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
+      {message && (
+        <div style={{
+          padding: '12px',
+          marginBottom: '20px',
+          backgroundColor: message.includes('Error') ? '#f84960' : '#02c076',
+          color: '#ffffff',
+          borderRadius: '8px'
+        }}>
+          {message}
         </div>
+      )}
 
-        <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-          <h3 style={{ marginBottom: '20px', color: '#2c3e50' }}>Payment Details</h3>
+      <form onSubmit={handleSubmit}>
+        {/* INR Payment Settings */}
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '24px', 
+          borderRadius: '12px', 
+          marginBottom: '24px',
+          border: '1px solid #474d57'
+        }}>
+          <h3 style={{ color: '#ffffff', marginBottom: '20px' }}>INR Payment Settings</h3>
           
           <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>UPI ID</label>
+            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              UPI ID
+            </label>
             <input
               type="text"
+              name="upiId"
               value={settings.upiId}
-              onChange={(e) => setSettings({ ...settings, upiId: e.target.value })}
-              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
+              onChange={handleChange}
+              placeholder="Enter UPI ID"
+              style={{
+                width: '100%',
+                padding: '12px',
+                backgroundColor: '#1e2329',
+                border: '1px solid #474d57',
+                borderRadius: '8px',
+                color: '#ffffff',
+                fontSize: '16px'
+              }}
             />
           </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Bank Account</label>
-            <input
-              type="text"
-              value={settings.bankAccount}
-              onChange={(e) => setSettings({ ...settings, bankAccount: e.target.value })}
-              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+            <div>
+              <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+                Bank Account Number
+              </label>
+              <input
+                type="text"
+                name="bankAccount"
+                value={settings.bankAccount}
+                onChange={handleChange}
+                placeholder="Enter bank account number"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  backgroundColor: '#1e2329',
+                  border: '1px solid #474d57',
+                  borderRadius: '8px',
+                  color: '#ffffff',
+                  fontSize: '16px'
+                }}
+              />
+            </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Bank IFSC</label>
-            <input
-              type="text"
-              value={settings.bankIFSC}
-              onChange={(e) => setSettings({ ...settings, bankIFSC: e.target.value })}
-              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
-          </div>
+            <div>
+              <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+                IFSC Code
+              </label>
+              <input
+                type="text"
+                name="bankIFSC"
+                value={settings.bankIFSC}
+                onChange={handleChange}
+                placeholder="Enter IFSC code"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  backgroundColor: '#1e2329',
+                  border: '1px solid #474d57',
+                  borderRadius: '8px',
+                  color: '#ffffff',
+                  fontSize: '16px'
+                }}
+              />
+            </div>
 
-          <div style={{ marginBottom: '20px' }}>
-            <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Bank Name</label>
-            <input
-              type="text"
-              value={settings.bankName}
-              onChange={(e) => setSettings({ ...settings, bankName: e.target.value })}
-              style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
-            />
+            <div>
+              <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+                Bank Name
+              </label>
+              <input
+                type="text"
+                name="bankName"
+                value={settings.bankName}
+                onChange={handleChange}
+                placeholder="Enter bank name"
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  backgroundColor: '#1e2329',
+                  border: '1px solid #474d57',
+                  borderRadius: '8px',
+                  color: '#ffffff',
+                  fontSize: '16px'
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '10px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', marginTop: '30px' }}>
-        <h3 style={{ marginBottom: '20px', color: '#2c3e50' }}>USDT Address</h3>
-        
-        <div style={{ marginBottom: '20px' }}>
-          <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>USDT Wallet Address</label>
-          <input
-            type="text"
-            value={settings.usdtAddress}
-            onChange={(e) => setSettings({ ...settings, usdtAddress: e.target.value })}
-            style={{ width: '100%', padding: '10px', border: '1px solid #ddd', borderRadius: '4px' }}
-          />
+        {/* USDT Wallet Addresses */}
+        <div style={{ 
+          backgroundColor: '#2b3139', 
+          padding: '24px', 
+          borderRadius: '12px', 
+          marginBottom: '24px',
+          border: '1px solid #474d57'
+        }}>
+          <h3 style={{ color: '#ffffff', marginBottom: '20px' }}>USDT Wallet Addresses</h3>
+          
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              TRC-20 Address (Tron Network)
+            </label>
+            <input
+              type="text"
+              name="trc20Address"
+              value={settings.trc20Address}
+              onChange={handleChange}
+              placeholder="Enter TRC-20 wallet address"
+              style={{
+                width: '100%',
+                padding: '12px',
+                backgroundColor: '#1e2329',
+                border: '1px solid #474d57',
+                borderRadius: '8px',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontFamily: 'monospace'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              BEP-20 Address (BSC Network)
+            </label>
+            <input
+              type="text"
+              name="bep20Address"
+              value={settings.bep20Address}
+              onChange={handleChange}
+              placeholder="Enter BEP-20 wallet address"
+              style={{
+                width: '100%',
+                padding: '12px',
+                backgroundColor: '#1e2329',
+                border: '1px solid #474d57',
+                borderRadius: '8px',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontFamily: 'monospace'
+              }}
+            />
+          </div>
+
+          <div style={{ marginBottom: '20px' }}>
+            <label style={{ display: 'block', color: '#eaecef', marginBottom: '8px', fontWeight: '600' }}>
+              Aptos Network Address
+            </label>
+            <input
+              type="text"
+              name="aptosAddress"
+              value={settings.aptosAddress}
+              onChange={handleChange}
+              placeholder="Enter Aptos wallet address"
+              style={{
+                width: '100%',
+                padding: '12px',
+                backgroundColor: '#1e2329',
+                border: '1px solid #474d57',
+                borderRadius: '8px',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontFamily: 'monospace'
+              }}
+            />
+          </div>
         </div>
 
         <button
-          onClick={handleSave}
-          disabled={saving}
+          type="submit"
+          disabled={loading}
           style={{
-            padding: '12px 30px',
-            backgroundColor: '#2ecc71',
-            color: 'white',
+            width: '100%',
+            padding: '16px',
+            backgroundColor: loading ? '#848e9c' : '#fcd535',
+            color: '#000',
             border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
+            borderRadius: '12px',
             fontSize: '16px',
-            fontWeight: 'bold'
+            fontWeight: '600',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            transition: 'all 0.2s ease'
           }}
         >
-          {saving ? 'Saving...' : 'Save Settings'}
+          {loading ? 'Updating...' : 'Update Settings'}
         </button>
-      </div>
+      </form>
     </div>
   );
 };
