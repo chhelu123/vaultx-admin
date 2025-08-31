@@ -57,7 +57,7 @@ const Users = () => {
     const filtered = users.filter(user => 
       user.name.toLowerCase().includes(term.toLowerCase()) ||
       user.email.toLowerCase().includes(term.toLowerCase()) ||
-      user._id.toLowerCase().includes(term.toLowerCase())
+      user.userNumber?.toString().includes(term)
     );
     setFilteredUsers(filtered);
   };
@@ -89,7 +89,7 @@ const Users = () => {
       <div style={{ marginBottom: '20px' }}>
         <input
           type="text"
-          placeholder="Search users by name, email, or User ID..."
+          placeholder="Search users by name, email, or 6-digit User ID..."
           value={searchTerm}
           onChange={(e) => handleSearch(e.target.value)}
           style={{
@@ -119,8 +119,8 @@ const Users = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user._id} style={{ borderBottom: '1px solid #dee2e6' }}>
-                <td style={{ padding: '15px', fontFamily: 'monospace', fontSize: '12px', color: '#007bff' }} title={user._id}>
-                  {user._id.slice(0, 8)}...{user._id.slice(-4)}
+                <td style={{ padding: '15px', fontFamily: 'monospace', fontSize: '16px', color: '#007bff', fontWeight: '600' }}>
+                  {user.userNumber || 'N/A'}
                 </td>
                 <td style={{ padding: '15px' }}>{user.name}</td>
                 <td style={{ padding: '15px' }}>{user.email}</td>
